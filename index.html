@@ -9,13 +9,11 @@
     
     <style>
         :root {
-            /* Telegram түстеріне жақын */
-            --primary: #229ED9; 
-            --secondary: #0088cc;
-            --dark: #0f172a;
-            --card-bg: #1e293b;
+            --primary: #00e5ff; /* Неон көк (Логотип түсі) */
+            --secondary: #2979ff;
+            --dark: #050a14; /* Өте қою көк */
+            --card-bg: #0f172a;
             --text: #f1f5f9;
-            --accent: #38bdf8;
         }
         
         * { box-sizing: border-box; }
@@ -26,53 +24,47 @@
             padding: 0;
             background-color: var(--dark);
             color: var(--text);
-            overflow-x: hidden;
+            overflow-x: hidden; /* Анимация кезінде экран сырғып кетпес үшін */
         }
 
-        /* Фондағы анимациялық тор */
+        /* Matrix Rain эффектісіне ұқсас фон */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(34, 158, 217, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(34, 158, 217, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+            background: 
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
             z-index: -1;
-            mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 80%);
         }
 
-        /* Навигация */
+        /* Хедер */
         header {
-            padding: 20px 5%;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(5, 10, 20, 0.8);
             backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
         }
 
-        .logo {
-            font-size: 1.8rem;
+        .logo-text {
+            font-size: 1.5rem;
             font-weight: 700;
             color: #fff;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
-        /* Логотиптегі AI сөзі ерекшеленуі үшін */
-        .logo span {
-            color: var(--primary);
-        }
+        .logo-text span { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
-        /* Басты бет (Hero) */
+        /* HERO СЕКЦИЯСЫ */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -80,22 +72,33 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 100px 20px 50px;
+            padding: 120px 20px 50px;
+        }
+
+        /* ЛОГОТИП СУРЕТІНІҢ СТИЛІ */
+        .main-logo {
+            width: 280px; /* Логотип өлшемі */
+            max-width: 80%;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.4)); /* Жарқырау эффектісі */
+            animation: float 6s ease-in-out infinite; /* Қалқып тұру анимациясы */
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-bottom: 20px;
             line-height: 1.1;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         h1 span {
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
         }
 
         p.subtitle {
@@ -103,43 +106,40 @@
             color: #94a3b8;
             max-width: 600px;
             margin-bottom: 40px;
-            line-height: 1.6;
         }
 
-        /* Telegram батырмасы */
         .btn {
-            padding: 18px 50px;
-            background-color: var(--primary);
-            color: white;
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--primary);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px -10px rgba(34, 158, 217, 0.6);
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
             display: inline-flex;
             align-items: center;
             gap: 10px;
         }
 
         .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px -10px rgba(34, 158, 217, 0.8);
-            background-color: #1c8ac0;
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.8);
         }
 
-        /* Қызметтер */
+        /* ҚЫЗМЕТТЕР & АНИМАЦИЯ */
         .services {
             padding: 80px 5%;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
+            overflow: hidden; /* Анимация шетке шығып кетпес үшін */
         }
 
         .section-header h2 {
             font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
             color: white;
         }
 
@@ -156,25 +156,35 @@
             border: 1px solid rgba(255,255,255,0.05);
             transition: 0.3s;
             position: relative;
+            
+            /* Бастапқыда көрінбейді (Анимация үшін) */
+            opacity: 0;
+            transform: translateX(-100px); /* Сол жаққа жылжып тұрады */
+            transition: all 1s ease; /* 1 секундта баяу шығады */
+        }
+
+        /* Оң жақтан шығатын карточкалар үшін */
+        .card:nth-child(even) {
+            transform: translateX(100px); /* Жұп санды карточкалар оң жақта тұрады */
+        }
+
+        /* Анимация іске қосылғанда осы класс беріледі */
+        .card.show {
+            opacity: 1;
+            transform: translateX(0); /* Ортаға келеді */
         }
 
         .card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) !important; /* Тек жоғары көтерілу */
             border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
         }
 
         .card-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(34, 158, 217, 0.1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             color: var(--primary);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--primary);
         }
 
         .card h3 {
@@ -188,7 +198,6 @@
             line-height: 1.6;
         }
 
-        /* Футер */
         footer {
             text-align: center;
             padding: 60px 20px;
@@ -196,29 +205,31 @@
             color: #64748b;
         }
 
-        /* Телефонға бейімдеу */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
+            h1 { font-size: 2.2rem; }
             .btn { width: 100%; justify-content: center; }
+            /* Телефонда анимацияны жұмсарту */
+            .card { transform: translateY(50px); } 
+            .card:nth-child(even) { transform: translateY(50px); }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">
-            <i class="fa-solid fa-bolt"></i> Uaqyt<span>AI</span>
-        </div>
+        <div class="logo-text">Uaqyt<span>AI</span></div>
     </header>
 
     <section class="hero">
+        <img src="logo.png" alt="UaqytAI Logo" class="main-logo">
+
         <h1>Болашақтың бизнесін <br><span>бүгін жасаңыз</span></h1>
         <p class="subtitle">
             Біз n8n арқылы рутинаны автоматтандырамыз, AI арқылы контент жасаймыз және 
             сатылым әкелетін сайттар құрастырамыз.
         </p>
         
-        <a href="https://t.me/uaqytAi" class="btn" target="_blank">
+        <a href="https://t.me/MUNA_JERGE_TELEGRAM_SILTEMESIN_QOYINYZ" class="btn" target="_blank">
             <i class="fa-brands fa-telegram"></i> Telegram-ға өту
         </a>
     </section>
@@ -229,7 +240,7 @@
         </div>
         
         <div class="grid">
-            <div class="card">
+            <div class="card hidden">
                 <div class="card-icon">
                     <i class="fa-solid fa-robot"></i>
                 </div>
@@ -237,7 +248,7 @@
                 <p>Бизнес процестерді роботқа тапсырыңыз. Telegram боттар, CRM жүйелерді жалғау және тапсырысты автоматты өңдеу.</p>
             </div>
             
-            <div class="card">
+            <div class="card hidden">
                 <div class="card-icon">
                     <i class="fa-solid fa-code"></i>
                 </div>
@@ -245,7 +256,7 @@
                 <p>Клиентті "сатып алуға" итермелейтін заманауи, жылдам әрі мобильді сайттар. SEO және дизайн кіреді.</p>
             </div>
 
-            <div class="card">
+            <div class="card hidden">
                 <div class="card-icon">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
@@ -259,6 +270,23 @@
         <p>Байланыс үшін Telegram-ға жазыңыз</p>
         <p>&copy; 2025 UaqytAI. Барлық құқықтар қорғалған.</p>
     </footer>
+
+    <script>
+        // Бақылаушы (Observer) құрамыз
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                console.log(entry)
+                if (entry.isIntersecting) {
+                    // Егер блок экранға көрінсе, 'show' классын қосамыз
+                    entry.target.classList.add('show');
+                }
+            });
+        });
+
+        // Барлық 'card' элементтерін бақылаймыз
+        const hiddenElements = document.querySelectorAll('.card');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
 
 </body>
 </html>
