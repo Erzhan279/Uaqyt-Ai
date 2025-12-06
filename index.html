@@ -292,9 +292,11 @@
     <script>
         AOS.init({ duration: 1000, once: true });
     </script>
-    <button class="chatbot-toggler">
+        <button class="chatbot-toggler">
         <span class="material-symbols-rounded"><i class="fa-solid fa-robot"></i></span>
         <span class="material-symbols-outlined"><i class="fa-solid fa-xmark"></i></span>
+        
+        <span class="bot-tooltip">Сұрағыңыз бар ма? 🤖</span>
     </button>
 
     <div class="chatbot">
@@ -317,9 +319,9 @@
     </div>
 
     <style>
-        /* Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
+        /* Батырманың стилі */
         .chatbot-toggler {
             position: fixed;
             bottom: 30px;
@@ -337,156 +339,78 @@
             box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
             transition: all 0.2s ease;
             z-index: 9999;
+            /* Батырманың өзі де сәл секіріп тұрады */
+            animation: bounceBtn 3s infinite;
+        }
+
+        @keyframes bounceBtn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
         
-        .chatbot-toggler span {
-            color: #fff;
+        .chatbot-toggler span { color: #fff; position: absolute; font-size: 24px; }
+        .chatbot-toggler span:last-child, body.show-chatbot .chatbot-toggler span:first-child { opacity: 0; }
+        body.show-chatbot .chatbot-toggler span:last-child { opacity: 1; }
+
+        /* ЖАҢА: Хабарламаның стилі (Tooltip) */
+        .bot-tooltip {
             position: absolute;
-            font-size: 24px;
-        }
-        
-        .chatbot-toggler span:last-child,
-        body.show-chatbot .chatbot-toggler span:first-child  {
-            opacity: 0;
-        }
-        
-        body.show-chatbot .chatbot-toggler span:last-child {
-            opacity: 1;
-        }
-
-        .chatbot {
-            position: fixed;
-            right: 35px;
-            bottom: 100px;
-            width: 380px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            overflow: hidden;
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.5);
-            transform-origin: bottom right;
-            box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
-                        0 32px 64px -48px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-            z-index: 9999;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-        }
-
-        body.show-chatbot .chatbot {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
-        }
-
-        .chatbot header {
-            padding: 16px 0;
-            position: relative;
-            text-align: center;
-            color: #fff;
-            background: linear-gradient(135deg, #00f2ff, #7000ff);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .chatbot header span {
-            position: absolute;
-            right: 15px;
+            right: 75px; /* Батырманың сол жағында тұрады */
             top: 50%;
-            display: none;
-            cursor: pointer;
             transform: translateY(-50%);
+            background: white;
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 20px 20px 0 20px; /* Сөйлеу бұлтшасының пішіні */
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            pointer-events: none;
+            opacity: 0; /* Бастапқыда көрінбейді */
+            /* Анимацияны қосу */
+            animation: popMessage 6s infinite;
         }
 
+        /* Чат ашылғанда хабарлама жоғалады */
+        body.show-chatbot .bot-tooltip { display: none; }
+
+        /* Хабарламаның шығып-кіру анимациясы */
+        @keyframes popMessage {
+            0% { opacity: 0; transform: translate(10px, -50%) scale(0.8); }
+            10% { opacity: 1; transform: translate(0, -50%) scale(1); } /* Шығады */
+            60% { opacity: 1; transform: translate(0, -50%) scale(1); } /* Тұрады */
+            70% { opacity: 0; transform: translate(0, -50%) scale(1); } /* Жоғалады */
+            100% { opacity: 0; } /* Күтеді */
+        }
+
+        /* Чат терезесінің стилі (бұрынғыдай) */
+        .chatbot {
+            position: fixed; right: 35px; bottom: 100px; width: 380px;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px);
+            border-radius: 20px; overflow: hidden; opacity: 0;
+            pointer-events: none; transform: scale(0.5); transform-origin: bottom right;
+            box-shadow: 0 0 128px 0 rgba(0,0,0,0.1), 0 32px 64px -48px rgba(0,0,0,0.5);
+            transition: all 0.3s ease; z-index: 9999; border: 1px solid rgba(0, 242, 255, 0.3);
+        }
+        body.show-chatbot .chatbot { opacity: 1; pointer-events: auto; transform: scale(1); }
+        .chatbot header { padding: 16px 0; position: relative; text-align: center; color: #fff; background: linear-gradient(135deg, #00f2ff, #7000ff); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .chatbot header span { position: absolute; right: 15px; top: 50%; display: none; cursor: pointer; transform: translateY(-50%); }
         header h2 { font-size: 1.2rem; font-family: 'Poppins', sans-serif; }
-
-        .chatbot .chatbox {
-            overflow-y: auto;
-            height: 400px;
-            padding: 30px 20px 100px;
-        }
-
+        .chatbot .chatbox { overflow-y: auto; height: 400px; padding: 30px 20px 100px; }
         .chatbot :where(.chatbox, textarea)::-webkit-scrollbar { width: 6px; }
         .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-track { background: #fff; border-radius: 25px; }
         .chatbot :where(.chatbox, textarea)::-webkit-scrollbar-thumb { background: #ccc; border-radius: 25px; }
-
         .chatbox .chat { display: flex; list-style: none; }
-        
         .chatbox .outgoing { margin: 20px 0; justify-content: flex-end; }
-        
-        .chatbox .incoming span {
-            width: 32px;
-            height: 32px;
-            color: #fff;
-            cursor: default;
-            text-align: center;
-            line-height: 32px;
-            align-self: flex-end;
-            background: linear-gradient(135deg, #00f2ff, #7000ff);
-            border-radius: 4px;
-            margin: 0 10px 7px 0;
-            font-size: 16px;
-        }
-
-        .chatbox .chat p {
-            white-space: pre-wrap;
-            padding: 12px 16px;
-            border-radius: 10px 10px 0 10px;
-            max-width: 75%;
-            color: #fff;
-            font-size: 0.95rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chatbox .incoming p {
-            border-radius: 10px 10px 10px 0;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .chatbox .outgoing p {
-            background: linear-gradient(135deg, #00f2ff, #7000ff);
-            color: #fff;
-            border: none;
-        }
-
-        .chatbot .chat-input {
-            display: flex;
-            gap: 5px;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            padding: 3px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .chat-input textarea {
-            height: 55px;
-            width: 100%;
-            border: none;
-            outline: none;
-            resize: none;
-            max-height: 180px;
-            padding: 15px 15px 15px 0;
-            font-size: 0.95rem;
-            background: transparent;
-            color: #fff;
-        }
-
-        .chat-input span {
-            align-self: flex-end;
-            color: #00f2ff;
-            cursor: pointer;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            visibility: hidden;
-            font-size: 1.35rem;
-        }
-
+        .chatbox .incoming span { width: 32px; height: 32px; color: #fff; cursor: default; text-align: center; line-height: 32px; align-self: flex-end; background: linear-gradient(135deg, #00f2ff, #7000ff); border-radius: 4px; margin: 0 10px 7px 0; font-size: 16px; }
+        .chatbox .chat p { white-space: pre-wrap; padding: 12px 16px; border-radius: 10px 10px 0 10px; max-width: 75%; color: #fff; font-size: 0.95rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .chatbox .incoming p { border-radius: 10px 10px 10px 0; background: rgba(255, 255, 255, 0.1); }
+        .chatbox .outgoing p { background: linear-gradient(135deg, #00f2ff, #7000ff); color: #fff; border: none; }
+        .chatbot .chat-input { display: flex; gap: 5px; position: absolute; bottom: 0; width: 100%; background: rgba(15, 23, 42, 0.95); padding: 3px 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .chat-input textarea { height: 55px; width: 100%; border: none; outline: none; resize: none; max-height: 180px; padding: 15px 15px 15px 0; font-size: 0.95rem; background: transparent; color: #fff; }
+        .chat-input span { align-self: flex-end; color: #00f2ff; cursor: pointer; height: 55px; display: flex; align-items: center; visibility: hidden; font-size: 1.35rem; }
         .chat-input textarea:valid ~ span { visibility: visible; }
-
         @media (max-width: 490px) {
             .chatbot-toggler { right: 20px; bottom: 20px; }
             .chatbot { right: 0; bottom: 0; height: 100%; border-radius: 0; width: 100%; }
@@ -503,14 +427,12 @@
         const chatInput = document.querySelector(".chat-input textarea");
         const sendChatBtn = document.querySelector(".chat-input span");
 
-        let userMessage = null; // Пользователь жазған сөз
+        let userMessage = null; 
         const inputInitHeight = chatInput.scrollHeight;
 
-        // ==========================================================
-        // МЫНА ЖЕРГЕ N8N WEBHOOK СІЛТЕМЕСІН ҚОЮ КЕРЕК:
-        // .trim() командасы қате пробелдерді алып тастайды
-        const N8N_WEBHOOK_URL = "https://server6254.vopami-server.com/webhook/bd835b37-e8b4-485c-9f28-6ac9b1d8afd1".trim();
-        // ==========================================================
+        // URL ТАЗАЛАУ (ҚАТЕ КЕТПЕС ҮШІН)
+        const rawUrl = "https://server6254.vopami-server.com/webhook/bd835b37-e8b4-485c-9f28-6ac9b1d8afd1";
+        const N8N_WEBHOOK_URL = rawUrl.replace(/\s/g, '').trim(); 
 
         const createChatLi = (message, className) => {
             const chatLi = document.createElement("li");
@@ -526,26 +448,16 @@
         const generateResponse = (chatElement) => {
             const messageElement = chatElement.querySelector("p");
 
-            // N8N-ге сұраныс жіберу
             fetch(N8N_WEBHOOK_URL, {
                 method: "POST",
-                headers: {
-    "Content-Type": "application/json; charset=utf-8"
-},
-
-                body: JSON.stringify({ 
-                    message: userMessage  // n8n-ге "message" деген атпен барады
-                }) 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage }) 
             }).then(res => res.json())
             .then(data => {
-                // n8n-нен жауап "answer" деген кілтпен келуі керек
                 messageElement.textContent = data.answer || data.output || "Жауап келмеді...";
-                        }).catch((error) => {
-                // Қатенің нақты себебін экранға шығарамыз
-                alert("ҚАТЕ ШЫҚТЫ: " + error.message); 
-                messageElement.textContent = "Қате кетті... Қайта көріңіз.";
+            }).catch((error) => {
+                messageElement.textContent = "Байланыс қатесі... Қайта көріңіз.";
             }).finally(() => {
-
                 chatbox.scrollTo(0, chatbox.scrollHeight);
             });
         }
@@ -556,18 +468,13 @@
 
             chatInput.value = "";
             chatInput.style.height = `${inputInitHeight}px`;
-
-            // 1. Адамның жазғанын экранға шығару
             chatbox.appendChild(createChatLi(userMessage, "outgoing"));
             chatbox.scrollTo(0, chatbox.scrollHeight);
 
-            // 2. "Жазып жатыр..." деген хабарлама шығару
             setTimeout(() => {
-                const incomingChatLi = createChatLi("Ойланып жатырмын...", "incoming");
+                const incomingChatLi = createChatLi("...", "incoming");
                 chatbox.appendChild(incomingChatLi);
                 chatbox.scrollTo(0, chatbox.scrollHeight);
-                
-                // 3. n8n-нен жауап күту
                 generateResponse(incomingChatLi);
             }, 600);
         }
@@ -576,14 +483,12 @@
             chatInput.style.height = `${inputInitHeight}px`;
             chatInput.style.height = `${chatInput.scrollHeight}px`;
         });
-
         chatInput.addEventListener("keydown", (e) => {
             if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
                 e.preventDefault();
                 handleChat();
             }
         });
-
         sendChatBtn.addEventListener("click", handleChat);
         closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
         chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
