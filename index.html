@@ -508,7 +508,8 @@
 
         // ==========================================================
         // МЫНА ЖЕРГЕ N8N WEBHOOK СІЛТЕМЕСІН ҚОЮ КЕРЕК:
-        const N8N_WEBHOOK_URL = "https://server6254.vopami-server.com/webhook/bd835b37-e8b4-485c-9f28-6ac9b1d8afd1"; 
+        // .trim() командасы қате пробелдерді алып тастайды
+        const N8N_WEBHOOK_URL = "https://server6254.vopami-server.com/webhook/bd835b37-e8b4-485c-9f28-6ac9b1d8afd1".trim();
         // ==========================================================
 
         const createChatLi = (message, className) => {
