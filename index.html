@@ -353,48 +353,51 @@
         body.show-chatbot .chatbot-toggler span:last-child { opacity: 1; }
 
                 /* ЖАҢА: NEON STYLE ХАБАРЛАМА */
+                /* ЖАҢАРТЫЛҒАН: КІШКЕНТАЙ ӘРІ ЖИНАҚЫ СТИЛЬ */
         .bot-tooltip {
             position: absolute;
-            right: 80px; /* Батырмадан сәл алысырақ */
+            right: 70px; /* Батырмаға жақындаттық (бұрын 80px еді) */
             top: 50%;
             transform: translateY(-50%);
             
-            /* ФОН ЖӘНЕ ТҮС */
-            background: rgba(15, 23, 42, 0.9); /* Қою мөлдір түс */
-            color: #00f2ff; /* Неон жазу */
-            border: 1px solid #00f2ff; /* Жіңішке жиек */
+            background: rgba(15, 23, 42, 0.95); 
+            color: #00f2ff;
+            border: 1px solid rgba(0, 242, 255, 0.5); /* Жиегін сәл жіңішкерттік */
             
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-family: 'Outfit', sans-serif; /* Сайттың шрифті */
-            font-weight: 600;
+            /* ӨЛШЕМДЕРІН КІШІРЕЙТТІК 👇 */
+            padding: 6px 12px;  /* Бұрын 10px 18px еді */
+            border-radius: 8px; /* Бұрышын кішірейттік */
+            font-size: 12px;    /* Әрпін кішірейттік */
+            
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500; /* Тым жуан қылмай, орташа қылдық */
             white-space: nowrap;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             
-            /* ЖАРҚЫРАУ ЭФФЕКТІСІ (GLOW) */
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); /* Жарқырауды сәл азайттық */
             
             pointer-events: none;
             opacity: 0;
-            
-            /* АНИМАЦИЯ */
             animation: hologramPop 5s infinite;
         }
 
-        /* Үшбұрыш (Стрелка) жасау - Ботқа қарап тұрады */
+        /* Үшбұрыш (Стрелка) - Мұны да кішірейту керек */
         .bot-tooltip::after {
             content: '';
             position: absolute;
-            right: -6px; /* Оң жаққа шығып тұрады */
+            right: -5px; /* Сәл жақындаттық */
             top: 50%;
             transform: translateY(-50%) rotate(45deg);
-            width: 10px;
-            height: 10px;
-            background: rgba(15, 23, 42, 0.9);
-            border-right: 1px solid #00f2ff;
-            border-top: 1px solid #00f2ff;
+            
+            /* Үшбұрыш өлшемі кішірейді 👇 */
+            width: 8px;  
+            height: 8px;
+            
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(0, 242, 255, 0.5);
+            border-top: 1px solid rgba(0, 242, 255, 0.5);
         }
+
 
         /* Чат ашылғанда жоғалады */
         body.show-chatbot .bot-tooltip { display: none; }
