@@ -494,20 +494,18 @@
             return chatLi;
         }
 
-        const generateResponse = (chatElement) => {
+                const generateResponse = (chatElement) => {
             const messageElement = chatElement.querySelector("p");
 
-            // 1. ТАЙМЕРДІ 35 СЕКУНДҚА ҚОЙДЫҚ 👇
+            // 90 секунд күту
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 35000); // 35000 мс = 35 секунд
+            const timeoutId = setTimeout(() => controller.abort(), 90000); 
 
             fetch(N8N_WEBHOOK_URL, {
                 method: "POST",
-                headers: { 
-                    "Content-Type": "application/json; charset=utf-8" 
-                },
+                headers: { "Content-Type": "application/json; charset=utf-8" },
                 body: JSON.stringify({ message: userMessage }),
-                signal: controller.signal // Таймерді қосамыз
+                signal: controller.signal
             }).then(res => {
                 if (!res.ok) {
                     throw new Error(`HTTP қатесі! Статус: ${res.status}`);
@@ -515,19 +513,25 @@
                 return res.json();
             })
             .then(data => {
-                messageElement.textContent = data.answer || data.output || "Жауап бос келді...";
+                // === МЫНА ЖЕРДІ ӨЗГЕРТТІК ===
+                // Келген дерек Тізім бе, әлде Объект пе? Тексереміз.
+                const finalData = Array.isArray(data) ? data[0] : data;
+                
+                // Жауапты шығарамыз
+                messageElement.innerText = finalData.answer || finalData.output || "Түсініксіз жауап келді.";
+                // ============================
             }).catch((error) => {
-                // Қате түрін тексереміз
                 if (error.name === 'AbortError') {
-                    messageElement.textContent = "Сервер жауап беруге үлгермеді (35 сек өтті). Қайта сұрап көріңіз.";
+                    messageElement.textContent = "Уақыт бітті. Қайта сұраңыз.";
                 } else {
-                    messageElement.textContent = "Сервермен байланыс жоқ... Қайта көріңіз.";
+                    messageElement.textContent = "Қате: " + error.message;
                 }
             }).finally(() => {
-                clearTimeout(timeoutId); // Таймерді тоқтатамыз
+                clearTimeout(timeoutId);
                 chatbox.scrollTo(0, chatbox.scrollHeight);
             });
         }
+
 
         const handleChat = () => {
             userMessage = chatInput.value.trim();
